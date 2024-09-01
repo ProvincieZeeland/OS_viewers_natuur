@@ -1,0 +1,159 @@
+---
+title: "Monitoringplan Dashboard, Manteling van Walcheren"
+output: 
+  flexdashboard::flex_dashboard:
+    theme:
+      bg: "#e8e8e6" ## lichtgrijs
+      fg: "#3d4853" ## grijs
+      primary: "#c2004b"  ## rood
+      base_font:
+        google: Prompt
+      code_font:
+        google: JetBrains Mono
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(leaflet)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(htmltools)
+library(VHRscope)
+
+monitoring <- read_sf('natuurmonitoring/alle_soorten_SNL_vlakken.gpkg')
+monitoring <- st_transform(monitoring, crs = 'EPSG:4326')
+
+MvW_N2000 <- VHRscope::st_read_N2000NL(gebiedNummer = 117)
+MvW_N2000 <- st_transform(MvW_N2000, crs = 'EPSG:4326')
+```
+
+## Column {.tabset data-width="650"}
+
+### Per soort
+
+```{r}
+
+
+pal <- colorFactor(c('gray70','red', 'purple', 'blue'), domain = unique(monitoring$monitoring))
+
+soorten_layers <- monitoring %>% filter(file == 'Insecten.gpkg' ) %>%
+  pull(layer) %>% unique
+
+
+
+leaflet() %>% 
+  addProviderTiles("CartoDB.Positron") %>% 
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[1] ),
+              group = soorten_layers[1],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[2] ),
+              group = soorten_layers[2],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[3] ),
+              group = soorten_layers[3],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[4] ),
+              group = soorten_layers[4],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[5] ),
+              group = soorten_layers[5],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2, 
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[6] ),
+              group = soorten_layers[6],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[7] ),
+              group = soorten_layers[7],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[8] ),
+              group = soorten_layers[8],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[9] ),
+              group = soorten_layers[9],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = monitoring %>% filter(file == 'Insecten.gpkg', layer == soorten_layers[10] ),
+              group = soorten_layers[10],
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = ~pal(monitoring), popup = ~htmlEscape(paste0(beheertype_code, ' (', beheerder, ')')),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addLegend(pal = pal, values = monitoring$monitoring %>% unique(), 
+            opacity = 0.7, title = 'monitoring',
+            position = "bottomright") %>%
+  addControl(html = HTML('<h4>Monitoring Insecten</h4>'), position = "topright", className="map-title") %>%
+  addLayersControl(
+    baseGroups = soorten_layers,
+    options = layersControlOptions(collapsed = F)
+  ) 
+```
+
+### Soortlijst per vlak
+
+```{r}
+
+lijst_layers <-
+monitoring %>% filter(file == 'Insecten.gpkg', monitoring != 'geen') %>%
+  mutate(layer = ifelse(monitoring == 'TS N2000',  paste0(layer,'*'),layer)) %>% 
+  group_by(id,beheertype_code,beheerder, file ) %>%
+  arrange(layer) %>%
+  summarise(layer = paste0(unique(layer), collapse = "<br>"))
+  
+
+beheertypes <- read.csv(file = file.path(system.file(package = "VHRscope"), "extdata", "snl_beheertypen_colors.csv"), sep = ';')
+pal <- colorFactor(beheertypes$color, domain = beheertypes$beheertype_code)
+
+
+leaflet(data = lijst_layers) %>% 
+  addProviderTiles("CartoDB.Positron") %>% 
+  addPolygons(
+              color = "#444444", fillColor = ~pal(beheertype_code),
+              weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              popup = ~layer,
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addLegend(pal = pal, values = lijst_layers$beheertype_code %>% unique(), 
+            position = "topleft",
+            opacity = 0.7, title = 'beheertype_code') %>%
+  addControl(html = HTML('<h4>Monitoring Insecten</h4>'), position = "topright", className="map-title") #%>%
+
+```
