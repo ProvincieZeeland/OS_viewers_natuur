@@ -1,7 +1,7 @@
-# OS_viewers_natuur
+# OS viewers natuur
 Open Source front-end viewers in R voor prototyping, Programma Natuur, Provincie Zeeland
 
-Using *RMarkdown, leafet, flexdashboard*
+*RMarkdown, leafet, flexdashboard*
 
 
 ## Natuurmonitoring
