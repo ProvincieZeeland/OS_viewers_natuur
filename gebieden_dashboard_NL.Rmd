@@ -1,0 +1,76 @@
+---
+title: "Gebieden Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    theme:
+      bg: "#FDF7F7"
+      fg: "#101010"  
+      primary: "#22540a"
+      base_font:
+        google: Prompt
+      code_font:
+        google: JetBrains Mono
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(leaflet)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(htmltools)
+library(VHRscope)
+
+N2000 <- st_read_N2000NL()
+
+N2000 <- N2000 %>% group_by(gebiedNummer, gebiedNaam) %>% summarise() %>%
+  mutate(label = paste0(gebiedNaam,' (', gebiedNummer,')')) %>%
+  st_transform(crs = 'EPSG:4326') 
+
+km_hokken <- st_read_kmhokken() %>%
+  st_transform(crs = 'EPSG:4326') 
+
+SNL_gebieden <- st_read('gebieden/Beoordelingsgebieden_NL.shp') %>%
+  st_transform(crs = 'EPSG:4326') 
+```
+
+## Column {.tabset data-width="650"}
+
+### Nederland
+
+```{r}
+
+
+leaflet() %>% 
+  addProviderTiles("CartoDB.Positron") %>% 
+  addPolygons(data = N2000 ,
+              group = 'N2000',
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = 'green', popup = ~htmlEscape(label),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = km_hokken,
+              group = 'km hokken',
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.1,
+              fillColor = 'red', popup = ~htmlEscape(XY),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addPolygons(data = SNL_gebieden,
+              group = 'SNL gebieden',
+              color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.3,
+              fillColor = 'blue', popup = ~htmlEscape(gbnaam),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = TRUE)) %>%
+  addControl(html = HTML('<h4>Gebieden</h4>'), position = "topright", className="map-title") %>%
+  addLayersControl(
+    overlayGroups  = c('N2000','km hokken','SNL gebieden'),
+    options = layersControlOptions(collapsed = F)
+  )  %>% 
+  hideGroup("km hokken")
+```
+
