@@ -10,5 +10,5 @@ Prototype viewer voor [Natuurmonitoringsopzet](https://provinciezeeland.github.i
 
 Prototype viewer voor [Natuurgebieden](https://provinciezeeland.github.io/OS_viewers_natuur/gebieden_dashboard_NL.html).
 
-
-
+## Template Storyboard
+Prototype voor [Storyboard](https://provinciezeeland.github.io/OS_viewers_natuur/storyboard_dashboard.html).
