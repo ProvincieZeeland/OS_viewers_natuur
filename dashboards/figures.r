@@ -109,9 +109,13 @@ figuur$F <-
 
 waardenbox <- list()
 
-waardenbox$A <- valueBox(sample(size = 1,1000), caption = "Fietsen", icon="fa-thumbs-down")
-waardenbox$B <-valueBox(sample(size = 1,1000), caption = "Auto's", icon="fa-tag")
-waardenbox$C <-valueBox(sample(size = 1,1000), caption = "Voetgangers", icon="fa-random")
+waardenbox$A <- valueBox(sample(size = 1,1000), caption = "Fietsen", icon="ion-android-bicycle")
+waardenbox$B <-valueBox(sample(size = 1,1000), caption = "Auto's", icon="ion-android-car")
+waardenbox$C <-valueBox(sample(size = 1,1000), caption = "Voetgangers", icon="ion-eye")
+waardenbox$D <-valueBox(sample(size = 1,1000), caption = "Vliegtuigen", icon="fa-random")
+waardenbox$E <-valueBox(sample(size = 1,1000), caption = "Treinen", icon="ion-coffee")
+waardenbox$F <-valueBox(sample(size = 1,1000), caption = "Schepen", icon="ion-android-boat")
+
 
 ##
 N2000 <- st_read_N2000NL()
