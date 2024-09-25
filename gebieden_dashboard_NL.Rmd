@@ -35,13 +35,16 @@ N2000 <- N2000 %>% group_by(gebiedNummer, gebiedNaam) %>% summarise() %>%
 SNL_gebieden <- st_read('gebieden/Beoordelingsgebieden_NL.shp') %>%
   st_transform(crs = 'EPSG:4326') 
 
-FBE_gebieden <- st_read('gebieden/geonam_wldbhrnhdhdhvlk.gpkg') %>%
-  st_transform(crs = 'EPSG:4326') 
+# FBE_gebieden <- st_read('gebieden/geonam_wldbhrnhdhdhvlk.gpkg') %>%
+#   st_transform(crs = 'EPSG:4326') 
+# 
+# ZLD_eilanden <- st_read('gebieden/eilanden_ZLD.gpkg') %>%
+#   st_transform(crs = 'EPSG:4326') 
+# 
+# gemeenten <- st_read('gebieden/BestuurlijkeGebieden_2024.gpkg', layer = 'gemeentegebied') %>%
+#   st_transform(crs = 'EPSG:4326') 
 
-ZLD_eilanden <- st_read('gebieden/eilanden_ZLD.gpkg') %>%
-  st_transform(crs = 'EPSG:4326') 
-
-gemeenten <- st_read('gebieden/BestuurlijkeGebieden_2024.gpkg', layer = 'gemeentegebied') %>%
+SNL_gebieden_nieuw <- st_read('gebieden/vlakdekkende_kaart_NL_nieuw.gpkg', layer = 'NL') %>%
   st_transform(crs = 'EPSG:4326') 
 ```
 
@@ -61,49 +64,28 @@ leaflet() %>%
               fillColor = 'green', popup = ~htmlEscape(label),
               highlightOptions = highlightOptions(fillColor = "gray30", weight = 2,
                                                   bringToFront = TRUE)) %>%
-  # addPolygons(data = km_hokken,
-  #             group = 'km hokken',
-  #             color = "#444444", weight = 1, smoothFactor = 0.5,
-  #             opacity = 1.0, fillOpacity = 0.1,
-  #             fillColor = 'red', popup = ~htmlEscape(XY),
-  #             highlightOptions = highlightOptions(fillColor = "gray30", weight = 2,
-  #                                                 bringToFront = TRUE)) %>%
-  addPolygons(data = SNL_gebieden,
+    addPolygons(data = SNL_gebieden,
               group = 'SNL gebieden',
               color = "darkblue", weight = 1, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.3,
               fillColor = 'blue', popup = ~htmlEscape(gbnaam),
               highlightOptions = highlightOptions(fillColor = "gray30", weight = 2,
                                                   bringToFront = TRUE)) %>%
-  addPolygons(data = gemeenten,
-              group = 'gemeenten',
-              color = "darkred", weight = 1, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.3,
-              fillColor = 'red', popup = ~htmlEscape(naam),
-              highlightOptions = highlightOptions(fillColor = "gray30", weight = 2,
-                                                  bringToFront = TRUE)) %>%
-  addPolygons(data = FBE_gebieden,
-              group = 'FBE gebieden',
-              color = "darkorange", weight = 1, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.3,
-              fillColor = 'orange', popup = ~htmlEscape(wbe),
-              highlightOptions = highlightOptions(fillColor = "gray30", weight = 2,
-                                                  bringToFront = TRUE)) %>%
-  addPolygons(data = ZLD_eilanden,
-              group = 'Zeeuwse eilanden',
+    addPolygons(data = SNL_gebieden_nieuw,
+              group = 'Nieuwe vlakdekkende kaart op basis van SNL-beoordelingsgebieden',
               color = "purple", weight = 1, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.3,
-              fillColor = 'purple', popup = ~htmlEscape(naam),
+              fillColor = 'purple', popup = ~htmlEscape(gbnaam),
               highlightOptions = highlightOptions(fillColor = "gray30", weight = 2,
                                                   bringToFront = TRUE)) %>%
   addControl(html = HTML('<h4>Gebieden</h4>'), position = "topright", className="map-title") %>%
   addLayersControl(
-    overlayGroups  = c('N2000','gemeenten','SNL gebieden','FBE gebieden','Zeeuwse eilanden'),
+    overlayGroups  = c('N2000',
+                       'SNL gebieden',
+                       'Nieuwe vlakdekkende kaart op basis van SNL-beoordelingsgebieden'),
     options = layersControlOptions(collapsed = F)
   )  %>% 
   hideGroup("N2000") %>% 
-  hideGroup("FBE gebieden") %>%
-  hideGroup("gemeenten") %>%
-  hideGroup("Zeeuwse eilanden")
+  hideGroup("SNL gebieden")
 ```
 
